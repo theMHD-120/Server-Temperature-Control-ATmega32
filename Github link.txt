@@ -1,2 +1,0 @@
-GitHub repository link:
-https://github.com/theMHD-120/Server-Temperature-Control-ATmega32

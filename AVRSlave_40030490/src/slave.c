@@ -65,8 +65,15 @@ int main(void)
       while (1)
       {
         uint8_t temperature = get_temperature();
-        SPI_Transmit(temperature);
-        _delay_ms(10); // small delay to ensure synchronization
+        char sel_mode = SPI_Receive();
+
+        if (sel_mode == '1') // start transmit
+        {
+          temperature = get_temperature();
+          SPI_Transmit(temperature);
+          _delay_ms(10); // small delay to ensure synchronization
+        }
+
         motor_control(temperature);
       }
     }
@@ -76,6 +83,8 @@ int main(void)
 // Interrupt Service Routines ----------------------------------------------------------------
 ISR(ADC_vect)
 {
+  init_ADC();                              // initialize the ADC
+  init_TimerCounter();                     // initialize the Timer/Counter
   uint8_t temperature = get_temperature(); // get temperature from ADC
   set_motor_duty_cycle(temperature);       // update duty cycle based on temperature
 }

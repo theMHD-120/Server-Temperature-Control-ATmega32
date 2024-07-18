@@ -370,10 +370,14 @@ char select_mode(void)
   if (sel_mode == '1')
   {
     LCD_String("> Motor status: ");
+    SPI_Transmit('1');
+    _delay_ms(10); // small delay to ensure synchronization
     return 1;
   }
 
   LCD_String("> Temperature:  ");
+  SPI_Transmit('1');
+  _delay_ms(10); // small delay to ensure synchronization
   return 0;
 }
 
