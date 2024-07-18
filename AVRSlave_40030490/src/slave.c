@@ -53,7 +53,6 @@ int main(void)
 
   while (1)
   {
-    sei(); // Enable global interrupts
     char received_password[6];
     for (uint8_t i = 0; i < 5; i++)
       received_password[i] = SPI_Receive();
@@ -64,6 +63,7 @@ int main(void)
     {
       while (1)
       {
+        sei(); // Enable global interrupts
         uint8_t temperature = get_temperature();
         char sel_mode = SPI_Receive();
 
