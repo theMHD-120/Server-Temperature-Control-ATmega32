@@ -65,15 +65,20 @@ int main(void)
       {
         sei(); // Enable global interrupts
         uint8_t temperature = get_temperature();
+        sei(); // Enable global interrupts
         char sel_mode = SPI_Receive();
-
+        sei();               // Enable global interrupts
         if (sel_mode == '1') // start transmit
         {
+          sei(); // Enable global interrupts
           temperature = get_temperature();
+          sei(); // Enable global interrupts
           SPI_Transmit(temperature);
+          sei();         // Enable global interrupts
           _delay_ms(10); // small delay to ensure synchronization
         }
 
+        sei(); // Enable global interrupts
         motor_control(temperature);
       }
     }
@@ -252,9 +257,8 @@ uint8_t get_temperature(void)
 }
 
 /**
- * @brief Controls the motors based on the temperature and motor failure conditions.
+ * @brief Sets duty cycle and detects the failed motor (doesn't word  :*).
  *
- * @param exit: When we want to get only overall duty cycle (in master)
  * @param temperature: The current temperature value.
  */
 void motor_control(uint8_t temperature)
@@ -262,14 +266,18 @@ void motor_control(uint8_t temperature)
   // Set duty cycle based on temperature
   set_motor_duty_cycle(temperature);
 
-  // if (((PINA >> PINA6) & 1) == 1)
-  // {
-  //   while (((PINA >> PINA6) & 1) == 1)
-  //   {
-  //     // While push-button is not pressed, do nothing;
-  //     // Push-bottun is connected to ground;
-  //   }
-  // }
+  char master_alert = SPI_Receive();
+  if (master_alert == '1')
+  {
+    if (((PORTB >> PORTB6) & 1) == 0)
+      SPI_Transmit('1');
+    else if (((PORTD >> PORTD5) & 1) == 0)
+      SPI_Transmit('2');
+    else if (((PORTD >> PORTD4) & 1) == 0)
+      SPI_Transmit('3');
+    else
+      SPI_Transmit('0');
+  }
 }
 
 /**
