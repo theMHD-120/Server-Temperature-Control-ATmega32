@@ -38,7 +38,7 @@ void wait_for_pass_faults(void);
 unsigned char SPI_Receive(void);
 uint8_t call_of_duty(uint8_t temp);
 void SPI_Transmit(unsigned char data);
-void check_system_status(uint8_t overall_duty);
+void check_system_status(uint16_t overall_duty);
 
 // Main function -----------------------------------------------------------------------------
 int main(void)
@@ -106,9 +106,6 @@ int main(void)
         check_system_status(duty_cycle * 3);
         _delay_ms(300); // wait for 3 seconds
         LCD_init_display();
-
-        // SPI_Receive();
-        // SPI_Receive();
       }
     }
     else
@@ -386,7 +383,7 @@ char select_mode(void)
  *
  * @param overall_duty: The overall duty cycle of the motors.
  */
-void check_system_status(uint8_t overall_duty)
+void check_system_status(uint16_t overall_duty)
 {
   if (overall_duty < 90)
   {

@@ -261,6 +261,15 @@ void motor_control(uint8_t temperature)
 {
   // Set duty cycle based on temperature
   set_motor_duty_cycle(temperature);
+
+  // if (((PINA >> PINA6) & 1) == 1)
+  // {
+  //   while (((PINA >> PINA6) & 1) == 1)
+  //   {
+  //     // While push-button is not pressed, do nothing;
+  //     // Push-bottun is connected to ground;
+  //   }
+  // }
 }
 
 /**
