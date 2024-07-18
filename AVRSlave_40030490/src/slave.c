@@ -83,6 +83,7 @@ int main(void)
 // Interrupt Service Routines ----------------------------------------------------------------
 ISR(ADC_vect)
 {
+  init_ports();                            // initialize the ports
   init_ADC();                              // initialize the ADC
   init_TimerCounter();                     // initialize the Timer/Counter
   uint8_t temperature = get_temperature(); // get temperature from ADC
