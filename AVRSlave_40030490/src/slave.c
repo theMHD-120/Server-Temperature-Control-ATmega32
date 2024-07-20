@@ -36,7 +36,6 @@ uint8_t get_temperature(void);
 unsigned char SPI_Receive(void);
 char check_password(char *password);
 void SPI_Transmit(unsigned char data);
-void motor_control(uint8_t temperature);
 void set_motor_duty_cycle(uint8_t temp);
 
 // Main function -----------------------------------------------------------------------------
@@ -79,7 +78,7 @@ int main(void)
         }
 
         sei(); // Enable global interrupts
-        motor_control(temperature);
+        set_motor_duty_cycle(temperature);
       }
     }
   }
@@ -254,30 +253,6 @@ uint8_t get_temperature(void)
   //     Vref (5 volt)               2^(n) = 1024 (from 0 to 1023 -> 10 bits for ADC)
 
   return temperature;
-}
-
-/**
- * @brief Sets duty cycle and detects the failed motor (doesn't word  :*).
- *
- * @param temperature: The current temperature value.
- */
-void motor_control(uint8_t temperature)
-{
-  // Set duty cycle based on temperature
-  set_motor_duty_cycle(temperature);
-
-  char master_alert = SPI_Receive();
-  if (master_alert == '1')
-  {
-    if (((PORTB >> PORTB6) & 1) == 0)
-      SPI_Transmit('1');
-    else if (((PORTD >> PORTD5) & 1) == 0)
-      SPI_Transmit('2');
-    else if (((PORTD >> PORTD4) & 1) == 0)
-      SPI_Transmit('3');
-    else
-      SPI_Transmit('0');
-  }
 }
 
 /**

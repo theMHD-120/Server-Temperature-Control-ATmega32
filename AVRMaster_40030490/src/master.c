@@ -76,38 +76,20 @@ int main(void)
         uint8_t duty_cycle = call_of_duty(temperature);
         uint16_t overall_duty = duty_cycle * 3;
 
-        SPI_Transmit('1'); // alert to slave
-        _delay_ms(10);     // small delay to ensure synchronization
-        char failed_motor = SPI_Receive();
-        if (failed_motor)
-        {
-          duty_cycle *= 3;
-          duty_cycle /= 2;
-        }
-
         char buffer[16]; // string number
         if (mode)
         {
           // Display motor status and temperature
-          if (failed_motor == '1')
-            sprintf(buffer, "Motor 1: %s", "Failed!");
-          else
-            sprintf(buffer, "Motor 1: %d%%", duty_cycle);
+          sprintf(buffer, "Motor 1: %d%%", duty_cycle);
           LCD_String(buffer);
 
           _delay_ms(300); // wait for 3 seconds
           LCD_init_display();
 
-          if (failed_motor == '2')
-            sprintf(buffer, "Motor 2: %s     ", "Failed!");
-          else
-            sprintf(buffer, "Motor 2: %d%%     ", duty_cycle);
+          sprintf(buffer, "Motor 2: %d%%     ", duty_cycle);
           LCD_String(buffer);
 
-          if (failed_motor == '3')
-            sprintf(buffer, "Motor 3: %s", "Failed!");
-          else
-            sprintf(buffer, "Motor 3: %d%%", duty_cycle);
+          sprintf(buffer, "Motor 3: %d%%", duty_cycle);
           LCD_String(buffer);
 
           _delay_ms(300); // wait for 3 seconds
