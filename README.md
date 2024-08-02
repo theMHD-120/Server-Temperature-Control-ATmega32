@@ -7,7 +7,7 @@
 Implementation of a server temperature control system using 2 ATmega32 (AVR) microcontrollers; one as Master (fron-end or user interface) and one as Slave (backend or system controller). <br />
 For more guides and explanations, read the documentation file in Docks folder.</br > 
 
-### Detailed Breakdowns
+## Detailed Breakdowns
 
 - Master (ATmega32):
   - Initialization
